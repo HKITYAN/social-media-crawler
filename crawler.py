@@ -3,20 +3,38 @@ import tweepy
 import csv
 import sys
 
-consumer_key = "aaaaaaaaaaaa"
-consumer_secret = "zzzzzzzzzzz"
-access_token = "xxxxxxxxx"
-access_token_secret = "yyyyyyyyyy"
+def crawler(source_file_dir: str) -> None :
+    with open(source_file_dir, 'r') as stock_profile_list:
+        data_folder_dir = os.path.dirname(source_file_dir)
+        with open(os.path.join(data_folder_dir, 'tweet.csv'), 'w') as tweet_list:
+            fields = ['Stock', 'Date', 'Content', 'Author']
+            tweetWriter = csv.DictWriter(tweet_list, fields)
+            tweetWriter.writeheader()
 
-def crawler(data_dir: str):
-    print(data_dir)
+            rstocklist = csv.DictReader(stock_profile_list)
+            next(rstocklist)
 
-# root_dir = os.path.dirname(os.getcwd())
-# data_dir = os.path.join(root_dir, 'data')
+            for row in rstocklist:
+
+                tweetsPerQry = 100
+                maxTweets = 1000000
+                print("Searching for $" + row['ticker'])
+                hashtag = "$" + row['ticker']
+
+                try:
+                    print()
+                except Exception as e: # work on python 3.x
+                    print(str(e))
+
+                
+
+                
+
+                
 
 def main():
-    data_dir = sys.argv[1]
-    crawler(data_dir)
+    source_file_dir = sys.argv[1]
+    crawler(source_file_dir)
     
 if __name__ == '__main__':
     main()
